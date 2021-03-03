@@ -1,0 +1,616 @@
+﻿<Window x:Class="EPAM_XT_1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EPAM_XT_1"
+        mc:Ignorable="d"
+        Title="EPAM-XT-1" Height="500" Width="300" WindowStyle="None" WindowStartupLocation="CenterScreen" Icon="Sourse/titleicon.png" ResizeMode="NoResize" FontFamily="Verdana" Background="White">
+    <Window.Resources>
+        <!-- BUTTONS -->
+        
+        <Style x:Key="UsualButton" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="#FF76CDD8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0" BorderBrush="#FF222222" CornerRadius="5"
+                                 Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="PreviewMouseDown">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                            Duration="0:0:0.100" To="1,1,0,0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="PreviewMouseUp">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                            Duration="0:0:0.100" To="0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <!-- MENU -->
+        <Style x:Key="menubtn" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Background" Value="#FF76CDD8"/>
+            <Setter Property="Foreground" Value="#FF231F20"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0" BorderBrush="#FF222222" 
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3fb9ca"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <!-- TEXTBLOCK -->
+        <Style x:Key="textb" TargetType="TextBox">
+            <Setter Property="Background" Value="#FF464547"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#353435"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid x:Name="root" Height="{TemplateBinding Height}" 
+                              Width="{TemplateBinding Width}" SnapsToDevicePixels="True">
+                            <Border x:Name="Background" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="5"/>
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          BorderThickness="0"
+                                          Padding="{TemplateBinding Padding}"
+                                          IsTabStop="False"
+                                          Background="{x:Null}"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#26808C"/>
+                                <Setter Property="Background" Value="#76CCD8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="475"/>
+        </Grid.RowDefinitions>
+
+
+        <Grid Grid.Row="1" Background="White">
+            <Image Source="Sourse/epam.png"/>
+        </Grid>
+
+        <!-- TOOLBAR -->
+        <Grid Name="toolbar" Background="#FF76CDD8" MouseDown="toolbar_MouseDown">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"  >
+                <Image Name="MinButton" Height="25" Width="25" MouseDown="MinButton_MouseDown">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Source" Value="Sourse/свернуть.png"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=MinButton}" Value="True">
+                                    <Setter Property="Source" Value="Sourse/свернуть(навели).png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <Image Name="CloseButton" Height="25" Width="25" MouseDown="CloseButton_MouseDown">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Source" Value="Sourse/закрыть.png"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=CloseButton}" Value="True">
+                                    <Setter Property="Source" Value="Sourse/закрыть(навели).png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+
+                </Image>
+            </StackPanel>
+
+            <Image Name="MenuButton" Height="25" Width="25" MouseDown="MenuButton_MouseDown" HorizontalAlignment="Left">
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="Sourse/меню.png"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=MenuButton}" Value="True">
+                                <Setter Property="Source" Value="Sourse/меню(навели).png"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+
+            </Image>
+            <Label Name="ToolBarLabel" Content="&lt;-- Click here" HorizontalAlignment="Left" Height="25" Margin="25,0,0,0" VerticalAlignment="Top" Width="102"/>
+        </Grid>
+
+        <!-- Task 1 -->
+        <Grid Name="Task1Grid" Grid.Row="1" Background="White" Visibility="Hidden">
+
+            <TextBox x:Name="_1task_textbox" Style="{StaticResource textb}" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+            <TextBox x:Name="_2task_textbox" Style="{StaticResource textb}" Margin="100,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+            <TextBox x:Name="_3task_textbox" Style="{StaticResource textb}" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Center"
+                     PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                     Height="300" Width="280" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="False"/>
+
+            <Label Content="Написать программу, которая определяет &#xA;площадь прямоугольника со сторонами a и b. &#xA;Если пользователь вводит некорректные &#xD;&#xA;значения (отрицательные или ноль), должно &#xD;&#xA;выдаватьсясообщение об ошибке. &#xD;&#xA;Возможность ввода пользователем строки вида &#xD;&#xA;«абвгд» или нецелых чисел игнорировать.&#xA;" HorizontalAlignment="Left" Height="105" Margin="10,55,0,0" VerticalAlignment="Top" FontSize="10" Width="280"/>
+
+
+            <Border Height="40" Width="40" HorizontalAlignment="Right" 
+                VerticalAlignment="Top" Margin="0,10,10,0"
+                BorderThickness="1" Background="#FF222222"
+                  CornerRadius="5" >
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask1Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Go" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+
+
+            </Border>
+
+
+        </Grid>
+        
+        <!-- Task 2 -->
+        <Grid Name="Task2Grid" Grid.Row="1" Background="White" Visibility="Hidden">
+
+            <TextBox x:Name="_1_2task_textbox" Style="{StaticResource textb}" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+            <Label Content="Написать программу, которая запрашивает &#xA;с клавиатуры число N и выводит на экран &#xA;следующее «изображение», состоящее из N &#xD;&#xA;строк:" HorizontalAlignment="Left" Height="105" Margin="10,55,0,0" VerticalAlignment="Top" FontSize="10" Width="280"/>
+
+
+            <Border Height="40" Width="40" HorizontalAlignment="Right" 
+                VerticalAlignment="Top" Margin="0,10,10,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask2Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Go" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+
+            <TextBox x:Name="_2_2task_textbox" Style="{StaticResource textb}" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Left"
+                     PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                     Height="300" Width="280" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="False" FontFamily="Consolas"/>
+
+
+        </Grid>
+        
+        <!-- Task 3 -->
+        <Grid Name="Task3Grid" Grid.Row="1" Background="White" Visibility="Hidden">
+
+            <TextBox x:Name="_1_3task_textbox" Style="{StaticResource textb}" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+            <Label Content="Написать программу, которая запрашивает с &#xA;клавиатуры число N и выводит на экран &#xD;&#xA;следующее «изображение», состоящее из N строк:&#xA;" HorizontalAlignment="Left" Height="105" Margin="10,55,0,0" VerticalAlignment="Top" FontSize="10" Width="280"/>
+
+
+            <Border Height="40" Width="40" HorizontalAlignment="Right" 
+                VerticalAlignment="Top" Margin="0,10,10,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask3Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Go" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+
+            <TextBox x:Name="_2_3task_textbox" Style="{StaticResource textb}" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Left"
+                     PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                     Height="300" Width="280" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="False" FontFamily="Consolas"/>
+
+
+        </Grid>
+        
+        <!-- Task 4 -->
+        <Grid Name="Task4Grid" Grid.Row="1" Background="White" Visibility="Hidden">
+
+
+            <TextBox x:Name="_1_4task_textbox" Style="{StaticResource textb}" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+            <Label Content="Написать программу, которая запрашивает с &#xD;&#xA;клавиатуры число N и выводит на экран &#xD;&#xA;следующее «изображение», состоящее из N &#xD;&#xA;треугольников:" HorizontalAlignment="Left" Height="105" Margin="10,55,0,0" VerticalAlignment="Top" FontSize="10" Width="280"/>
+
+
+            <Border Height="40" Width="40" HorizontalAlignment="Right" 
+                VerticalAlignment="Top" Margin="0,10,10,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask4Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Go" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+
+            <TextBox x:Name="_2_4task_textbox" Style="{StaticResource textb}" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Left"
+                     PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                     Height="300" Width="280" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="False" FontFamily="Consolas"/>
+
+
+        </Grid>
+        
+        <!-- Task 5 -->
+        <Grid Name="Task5Grid" Grid.Row="1" Background="White" Visibility="Hidden">
+
+            <Label Content="Если выписать все натуральные числа меньше 10, &#xD;&#xA;кратные 3 или 5, то получим 3, 5, 6 и 9. Сумма&#xD;&#xA;этих чисел будет равна 23. &#xD;&#xA;Напишите программу, которая выводит на экран &#xD;&#xA;сумму всех чисел меньше 1000, кратных 3 или 5." 
+                   HorizontalAlignment="Left" Height="105" Margin="10,55,0,0" VerticalAlignment="Top" FontSize="10" Width="280"/>
+
+
+            <Border Height="40" Width="40" HorizontalAlignment="Right" 
+                VerticalAlignment="Top" Margin="0,10,10,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask5Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Go" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+
+            <TextBox x:Name="_1_5task_textbox" Style="{StaticResource textb}" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Center"
+                     PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                     Height="300" Width="280" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="False"/>
+
+
+        </Grid>
+        
+        <!-- Task 6 -->
+        <Grid Name="Task6Grid" Grid.Row="1" Background="White" Visibility="Hidden">
+            <Label Content="Для форматирования текста надписи можно &#xD;&#xA;использовать различные начертания: &#xD;&#xA;полужирное, курсивное и подчёркнутое, а также &#xD;&#xA;их сочетания. Предложите способ хранения &#xD;&#xA;информации о форматировании текста надписи &#xD;&#xA;и напишите программу, которая позволяет &#xD;&#xA;устанавливать и изменять начертание" 
+                   HorizontalAlignment="Left" Height="105" Margin="10,55,0,0" VerticalAlignment="Top" FontSize="10" Width="280"/>
+
+            <Border Height="40" Width="100" HorizontalAlignment="Left" 
+                VerticalAlignment="Top" Margin="150,10,0,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask6_1Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Underline" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+
+            <Border Height="40" Width="60" HorizontalAlignment="Left" 
+                VerticalAlignment="Top" Margin="80,10,0,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask6_2Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Italic" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+            
+            <Border Height="40" Width="60" HorizontalAlignment="Left" 
+                VerticalAlignment="Top" Margin="10,10,0,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask6_3Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Bold" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+
+            <TextBox x:Name="_1_6task_textbox" Style="{StaticResource textb}" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Center"
+                     PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                     Height="300" Width="280" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="False"/>
+
+        </Grid>
+        
+        <!-- Task 7 -->
+        <Grid Name="Task7Grid" Grid.Row="1" Background="White" Visibility="Hidden">
+            <Label Content="Написать программу, которая генерирует &#xD;&#xA;случайным образом элементы массива &#xD;&#xA;(число элементов в массиве и их тип &#xD;&#xA;определяются разработчиком), определяет для &#xD;&#xA;него максимальное и минимальное значения, &#xD;&#xA;сортирует массив и выводит полученный &#xD;&#xA;результат на экран." 
+                   HorizontalAlignment="Left" Height="105" Margin="10,55,0,0" VerticalAlignment="Top" FontSize="10" Width="280"/>
+
+
+            <Border Height="40" Width="40" HorizontalAlignment="Right" 
+                VerticalAlignment="Top" Margin="0,10,10,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask7Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Go" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+
+            <TextBox x:Name="_1_7task_textbox" Style="{StaticResource textb}" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Center"
+                     PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                     Height="300" Width="280" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="False"/>
+
+        </Grid>
+        
+        <!-- Task 8 -->
+        <Grid Name="Task8Grid" Grid.Row="1" Background="White" Visibility="Hidden">
+            <Label Content="Написать программу, которая заменяет&#xD;&#xA;все положительные элементы в &#xD;&#xA;трёхмерном массиве на нули. &#xD;&#xA;Число элементов в массиве и их тип &#xD;&#xA;определяются разработчиком.&#xD;&#xA;" 
+                   HorizontalAlignment="Left" Height="105" Margin="10,55,0,0" VerticalAlignment="Top" FontSize="10" Width="280"/>
+
+
+            <Border Height="40" Width="40" HorizontalAlignment="Right" 
+                VerticalAlignment="Top" Margin="0,10,10,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask8Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Go" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+
+            <TextBox x:Name="_1_8task_textbox" Style="{StaticResource textb}" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Center"
+                     PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                     Height="300" Width="280" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="False"/>
+
+        </Grid>
+        
+        <!-- Task 9 -->
+        <Grid Name="Task9Grid" Grid.Row="1" Background="White" Visibility="Hidden">
+            <Label Content="Написать программу, которая определяет сумму &#xD;&#xA;неотрицательных элементов в одномерном&#xD;&#xA;массиве. Число элементов в массиве и их тип &#xD;&#xA;определяются разработчиком.&#xD;" 
+                   HorizontalAlignment="Left" Height="105" Margin="10,55,0,0" VerticalAlignment="Top" FontSize="10" Width="280"/>
+
+
+            <Border Height="40" Width="40" HorizontalAlignment="Right" 
+                VerticalAlignment="Top" Margin="0,10,10,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask9Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Go" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+
+            <TextBox x:Name="_1_9task_textbox" Style="{StaticResource textb}" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Center"
+                     PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                     Height="300" Width="280" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="False"/>
+
+        </Grid>
+        
+        <!-- Task 10 -->
+        <Grid Name="Task10Grid" Grid.Row="1" Background="White" Visibility="Hidden">
+            <Label Content="Элемент двумерного массива считается стоящим &#xD;&#xA;на чётной позиции, если сумма номеров его&#xD;&#xA;позиций по обеим размерностям является чётным &#xD;&#xA;числом (например, [1,1] — чётная позиция, а&#xD;&#xA;[1,2] — нет). Определить сумму элементов &#xD;&#xA;массива, стоящих на чётных позициях.&#xA;" 
+                   HorizontalAlignment="Left" Height="105" Margin="10,55,0,0" VerticalAlignment="Top" FontSize="10" Width="280"/>
+
+
+            <Border Height="40" Width="40" HorizontalAlignment="Right" 
+                VerticalAlignment="Top" Margin="0,10,10,0"
+                BorderThickness="1" Background="#FF222222" CornerRadius="5">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#FF263852"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF222222"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Button Style="{StaticResource UsualButton}" Click="Buttontask10Calc_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Go" FontSize="16"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+
+            <TextBox x:Name="_1_10task_textbox" Style="{StaticResource textb}" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Center"
+                     PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                     Height="300" Width="280" AcceptsReturn="True" TextWrapping="Wrap" IsEnabled="False"/>
+
+        </Grid>
+
+        <!-- MENU -->
+        <Grid Name="MenuGrid" Grid.Row="1" Height="165" Width="300" HorizontalAlignment="Left" 
+              VerticalAlignment="Top" Background="#FF76CDD8" Visibility="Hidden" Grid.RowSpan="2">
+
+            <StackPanel Orientation="Vertical">
+                <Button Style="{StaticResource menubtn}" Click="Buttontask1_Click">
+                    <TextBlock Text="Задание 1"/>
+                </Button>
+                <Button Style="{StaticResource menubtn}" Click="Buttontask2_Click">
+                    <TextBlock Text="Задание 2"/>
+                </Button>
+                <Button Style="{StaticResource menubtn}" Click="Buttontask3_Click">
+                    <TextBlock Text="Задание 3"/>
+                </Button>
+                <Button Style="{StaticResource menubtn}" Click="Buttontask4_Click">
+                    <TextBlock Text="Задание 4"/>
+                </Button>
+                <Button Style="{StaticResource menubtn}" Click="Buttontask5_Click">
+                    <TextBlock Text="Задание 5"/>
+                </Button>
+                <Button Style="{StaticResource menubtn}" Click="Buttontask6_Click">
+                    <TextBlock Text="Задание 6"/>
+                </Button>
+                <Button Style="{StaticResource menubtn}" Click="Buttontask7_Click">
+                    <TextBlock Text="Задание 7"/>
+                </Button>
+                <Button Style="{StaticResource menubtn}" Click="Buttontask8_Click">
+                    <TextBlock Text="Задание 8"/>
+                </Button>
+                <Button Style="{StaticResource menubtn}" Click="Buttontask9_Click">
+                    <TextBlock Text="Задание 9"/>
+                </Button>
+                <Button Style="{StaticResource menubtn}" Click="Buttontask10_Click">
+                    <TextBlock Text="Задание 10"/>
+                </Button>
+            </StackPanel>
+
+        </Grid>
+
+        
+    </Grid>
+</Window>
