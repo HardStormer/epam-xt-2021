@@ -131,8 +131,8 @@ namespace EPAM_XT_1
                 string text = task1_input.Text;
                 string[] words = text.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                string max = ""; int maxIndex = 0;
-                string min = "spdodfiadsofipas"; int minIndex = 0;
+                string max = "";
+                string min = "spdodfiadsofipas";
 
                 int maxLength = 0;
                 int minLength = 0;
@@ -148,22 +148,20 @@ namespace EPAM_XT_1
                     if (word.Length > max.Length)
                     {
                         max = word;
-                        maxIndex = i;
                         maxLength = words[i].Length;
                     }
 
                     if (word.Length < min.Length)
                     {
                         min = word;
-                        minIndex = i;
                         minLength = words[i].Length;
                     }
 
                     i++;
                 }
 
-                task1_output.Text += ("Самое коротокое слово: \"" + min +"\", позиция = " + minIndex + 1 + ", размер " + minLength + "\n----------------------\n").ToString();
-                task1_output.Text += ("Самое длинное слово: \"" + max + "\", позиция = " + maxIndex + 1 + ", размер " + maxLength + "\n----------------------\n").ToString();
+                task1_output.Text += ("Самое коротокое слово: \"" + min +"\", размер " + minLength + "\n----------------------\n").ToString();
+                task1_output.Text += ("Самое длинное слово: \"" + max + "\", размер " + maxLength + "\n----------------------\n").ToString();
                 task1_output.Text += ("Количество слов: " + number + "\n----------------------\n").ToString();
                 task1_output.Text += ("Всего букв: " + allLength + "\n----------------------\n").ToString();
                 task1_output.Text += ("Среднее количество букв в слове: " + allLength / number).ToString();
