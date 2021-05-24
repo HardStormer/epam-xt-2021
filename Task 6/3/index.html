@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>POINTING BLOCK</title>
+    <style type="text/css">
+body{
+    background-color: #333333;
+}
+div{
+    box-sizing: border-box;
+    margin: 50px auto;
+    padding: 21px;
+    color: white;
+    text-align: center;
+    background-color: #88B7D5;
+    border: 5px solid #C5E0F1;
+    position: relative;
+}
+div::after{
+    content: '';
+    position: absolute;
+    background-color: #88B7D5;
+    left: calc(50% - 20px);
+    top: -26px;
+    width: 40px;
+    height: 40px;
+    border-top: 5px solid #C5E0F1;
+    border-right: 5px solid #C5E0F1;
+    transform: rotate(-45deg);
+}
+    </style>
+</head>
+<body>
+    <div>Дистанция огромного размера</div>
+</body>
