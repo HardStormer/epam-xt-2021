@@ -1,0 +1,108 @@
+﻿@using GMD.THREE_LAYER.Dependecies;
+@using GMD.THREE_LAYER.Entities;
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+
+    var userBll = DependencyResolver.Instance.usersLogic;
+    var awardBll = DependencyResolver.Instance.awardsLogic;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-light" type="button" data-toggle="collapse"
+                    data-target="#usersTable" aria-expanded="false"
+                    aria-controls="Table">
+                Users
+            </button>
+
+            <button class="btn btn-light" type="button" data-toggle="collapse"
+                    data-target="#awardsTable" aria-expanded="false"
+                    aria-controls="Table">
+                Awards
+            </button>
+        </div>
+
+        <div class="collapse" id="usersTable">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <td scope="col">Name</td>
+                        <td scope="col">Age</td>
+                        <td scope="col">Date of birth</td>
+                        <td scope="col">Awards of user</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in userBll.GetAll())
+                    {
+                        <tr>
+                            <td>@user.Name</td>
+                            <td>@user.Age</td>
+                            <td>@user.DateOfBirth.ToString("dd MMMM yyyy")</td>
+                            <td>
+                                @if (user.Awards != null)
+                                {
+                                    int i = 1;
+                                    foreach (var id in user.Awards)
+                                    {
+                                        <p>@i . @awardBll.GetById(id).Title </p>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <p>No awards</p>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="collapse" id="awardsTable">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <td scope="col">Award Title</td>
+                        <td scope="col">Users for award</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var award in awardBll.GetAll())
+                    {
+                        <tr>
+                            <td>@award.Title</td>
+                            <td>
+                                @if (award.Users != null)
+                                {
+                                    int i = 1;
+                                    foreach (var id in award.Users)
+                                    {
+                                        User newUser = userBll.GetById(id);
+                                        <p>@i . @newUser.Name @newUser.Age years </p>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <p>No users</p>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

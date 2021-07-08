@@ -1,0 +1,84 @@
+﻿@using GMD.THREE_LAYER.Dependecies;
+@using GMD.THREE_LAYER.Entities;
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var awardBll = DependencyResolver.Instance.awardsLogic;
+
+    if (IsPost)
+    {
+        string createName = Request.Form["TitleInput"];
+        if (createName != "")
+        {
+            Award newAward = new Award();
+            newAward.Title = createName;
+            newAward.ID = Guid.NewGuid();
+            awardBll.Create(newAward);
+            <div class="alert alert-success" role="alert">
+                Successefully added!
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                Some of intputs are empty!
+            </div>
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div class="wrapper">
+        <div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Pages/RedactorPages/AddUser.cshtml">Add user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="~/Pages/RedactorPages/AddAward.cshtml">Add award</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Pages/RedactorPages/DeleteUser.cshtml">Delete user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Pages/RedactorPages/DeleteAward.cshtml">Delete award</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="~/Pages/RedactorPages/AddAwardToUser.cshtml">Add award to user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="~/Pages/RedactorPages/DeleteAwardFromUser.cshtml">Delete award from user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="~/Pages/RedactorPages/EditUser.cshtml">Edit user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="~/Pages/RedactorPages/EditAward.cshtml">Edit award</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <form method="post">
+                <fieldset>
+                    <legend>Add Award</legend>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Title</span>
+                        </div>
+                        <input type="text" class="form-control" name="TitleInput"
+                               aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <input type="submit" class="btn btn-light" value="Submit" />
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

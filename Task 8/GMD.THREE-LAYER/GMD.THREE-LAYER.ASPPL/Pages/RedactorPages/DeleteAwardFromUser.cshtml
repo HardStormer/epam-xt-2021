@@ -1,0 +1,131 @@
+﻿@using GMD.THREE_LAYER.Dependecies;
+@using GMD.THREE_LAYER.Entities;
+@using Newtonsoft.Json;
+@using System;
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var userBll = DependencyResolver.Instance.usersLogic;
+    var awardBll = DependencyResolver.Instance.awardsLogic;
+    if (IsPost)
+    {
+        string userStr = Convert.ToString(Request.Form["userSelect"]);
+        string awardStr = Convert.ToString(Request.Form["awardSelect"]);
+        if (userStr != null && awardStr != null)
+        {
+            User user = JsonConvert.DeserializeObject<User>(userStr.Remove(Convert.ToString(Request.Form["userSelect"]).Length - 1));
+            Award award = JsonConvert.DeserializeObject<Award>(awardStr);
+
+            award.Users.Remove(user.ID);
+
+            user.Awards.Remove(award.ID);
+
+            userBll.Update(user);
+            awardBll.Update(award);
+            <div class="alert alert-success" role="alert">
+                Successefully deleted!
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                Some of intputs are empty!
+            </div>
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div class="wrapper">
+        <div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="~/Pages/RedactorPages/AddUser.cshtml">Add user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Pages/RedactorPages/AddAward.cshtml">Add award</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Pages/RedactorPages/DeleteUser.cshtml">Delete user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Pages/RedactorPages/DeleteAward.cshtml">Delete award</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Pages/RedactorPages/AddAwardToUser.cshtml">Add award to user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="~/Pages/RedactorPages/DeleteAwardFromUser.cshtml">Delete award from user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="~/Pages/RedactorPages/EditUser.cshtml">Edit user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="~/Pages/RedactorPages/EditAward.cshtml">Edit award</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <form method="post">
+                <fieldset>
+                    <legend>Remove award from user</legend>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Choose Award</label>
+                        </div>
+                        <select class="custom-select" id="awardSelect">
+                            <option selected value="null">Nothing</option>
+                            @foreach (var award in awardBll.GetAll())
+                            {
+                                <option value="@Convert.ToString(JsonConvert.SerializeObject(award))">
+                                    @award.Title
+                                </option>
+                            }
+                        </select>
+
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Choose User</label>
+                        </div>
+                        <select class="custom-select" id="userSelect">
+                            <option selected value="null">Nothing</option>
+                            
+                            @foreach (var user in userBll.GetAll())
+                            {
+                                if (Convert.ToString(Request.Form["awardSelect"]) != null)
+                                {
+                                    if (Convert.ToString(Request.Form["awardSelect"]) != "null")
+                                    {
+
+                                        if (JsonConvert.DeserializeObject<Award>(Convert.ToString(Request.Form["awardSelect"])).Users != null)
+                                        {
+                                            if (JsonConvert.DeserializeObject<Award>(Convert.ToString(Request.Form["awardSelect"])).Users.Contains(user.ID))
+                                            {
+                                        <option value="@Convert.ToString(JsonConvert.SerializeObject(user));">
+                                            @user.Name
+                                        </option>
+                                            }
+                                        }
+                                    }
+
+                                }
+
+
+                            }
+                        </select>
+                    </div>
+
+                    <input type="submit" class="btn btn-light" value="Submit" />
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
