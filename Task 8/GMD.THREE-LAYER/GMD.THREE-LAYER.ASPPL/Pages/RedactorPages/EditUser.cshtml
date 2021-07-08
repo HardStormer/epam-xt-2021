@@ -1,0 +1,124 @@
+﻿@using GMD.THREE_LAYER.Dependecies;
+@using GMD.THREE_LAYER.Entities;
+@using Newtonsoft.Json;
+@using System;
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var userBll = DependencyResolver.Instance.usersLogic;
+    int i = 1;
+
+    var dateNow = DateTime.Now.ToString("yyyy-MM-dd");
+    var dateMinimum = DateTime.Now.AddYears(-150).ToString("yyyy-MM-dd");
+
+    if (IsPost)
+    {
+        string userStr = Convert.ToString(Request.Form["userSelect"]);
+        string createName = Request.Form["NameInput"];
+        string createDate = Request.Form["DateInput"];
+        if (createDate != "" && createName != "???" && userStr != "null")
+        {
+            DateTime fixedCreateDate = DateTime.Parse(createDate);
+
+            User user = JsonConvert.DeserializeObject<User>(userStr.Remove(Convert.ToString(Request.Form["userSelect"]).Length - 1));
+            User newUser = new User();
+            newUser.Name = createName;
+            newUser.DateOfBirth = fixedCreateDate;
+            newUser.ID = user.ID;
+            newUser.Awards = user.Awards;
+            userBll.Update(newUser);
+            <div class="alert alert-success" role="alert">
+                Successefully added!
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                Some of intputs are empty!
+            </div>
+        }
+
+
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div class="wrapper">
+        <div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="~/Pages/RedactorPages/AddUser.cshtml">Add user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Pages/RedactorPages/AddAward.cshtml">Add award</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Pages/RedactorPages/DeleteUser.cshtml">Delete user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Pages/RedactorPages/DeleteAward.cshtml">Delete award</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="~/Pages/RedactorPages/AddAwardToUser.cshtml">Add award to user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="~/Pages/RedactorPages/DeleteAwardFromUser.cshtml">Delete award from user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="~/Pages/RedactorPages/EditUser.cshtml">Edit user</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="~/Pages/RedactorPages/EditAward.cshtml">Edit award</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <form method="post" data-name="UserForm">
+                <fieldset>
+                    <legend>Add User</legend>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Choose User</label>
+                        </div>
+                        <select class="custom-select" name="userSelect">
+                            <option selected value="null">Nothing</option>
+                            @foreach (var user in userBll.GetAll())
+                            {
+                                <option value="@Convert.ToString(JsonConvert.SerializeObject(user));">
+                                    @user.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+                        </div>
+                        <input type="text" class="form-control" name="NameInput"
+                               aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Birthday date</span>
+                        </div>
+                        <input type="date" class="form-control" name="DateInput"
+                               aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                               max="@dateNow" min="@dateMinimum">
+                    </div>
+
+                    <input type="submit" class="btn btn-light" value="Submit" />
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

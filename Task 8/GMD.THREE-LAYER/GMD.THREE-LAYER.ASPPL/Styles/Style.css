@@ -1,0 +1,23 @@
+﻿body{
+    min-width: 320px;
+    font-size: 14px;
+    color: #626262;
+}
+img{
+    max-width: 100%;
+    height: auto;
+}
+a{
+    color: #d4ad9e;
+}
+a:hover{
+    color: #898377;
+}
+.content {
+    padding: 7px;
+    border: 1px solid #ccc;
+}
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
